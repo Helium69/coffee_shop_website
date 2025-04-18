@@ -21,7 +21,7 @@
         
     </section>
 
-    <?php include("../reusable/home_footer.php")?>
+    <?php include("../reusable/general_footer.php")?>
     
 </body>
 </html>

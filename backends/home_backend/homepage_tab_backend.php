@@ -11,8 +11,12 @@
         $password_too_long = false;
 
         if(isset($_POST["signup"])){
+
+            // sign up backend
+
             if(isset($_POST["signup_submit"])){
 
+                // filters each user input
                 $name = filter_input(INPUT_POST, "signup_name", FILTER_SANITIZE_SPECIAL_CHARS) ?? "" ;
                 $name = trim(strtoupper($name));
                 $username = filter_input(INPUT_POST, "signup_username", FILTER_SANITIZE_SPECIAL_CHARS) ?? "" ;
@@ -20,6 +24,10 @@
                 $sex = filter_input(INPUT_POST, "signup_sex", FILTER_SANITIZE_SPECIAL_CHARS) ?? "" ;
                 $sex = strtoupper($sex);
     
+
+                // there might be a better way to do this but my head already hurts (and the weathers too hot)
+
+                //checks if the user input is out of range, returns bool value for warnings
                 
                 if(strlen($name) > 60){
                     $name_too_long = true;
@@ -42,6 +50,8 @@
                     $password_too_short = true;
                 }
 
+
+                // checks if the user input is valid
                 if((!$name_too_long && !$name_too_short) && (!$username_too_long && !$username_too_short) 
                 && (!$password_too_long && !$password_too_short)){
 
@@ -49,6 +59,7 @@
                     $default = 0.00;
                     $banned = 0;
 
+                    // saves to database
 
                     try{
                         include("../backends/database/database.php");
@@ -119,13 +130,20 @@
                     $result = mysqli_query($connection, $query);
 
                     if(mysqli_num_rows($result) > 0){
-                        
+                        $data = mysqli_fetch_assoc($result);
+                        if($data["username"] == $username && password_verify($password, $data["password"])){
+                            header("Location: admin_tab.php");
+                        }
                     };
 
                     mysqli_close($connection);
                 }
             }
             
+            /* i dont think this is the right file directory path since i 
+            only used one ../ but it works
+            */
+
             include("../backends/forms/admin_form.php");
         }
 
