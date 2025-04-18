@@ -47,7 +47,7 @@
                     $username_too_short = false;
                 }
 
-                if(strlen($password) > 10){
+                if(strlen($password) > 15){
                     $password_too_long = true;
                 }
                 elseif(strlen($password) < 5){
@@ -60,9 +60,23 @@
 
                 if((!$name_too_long && !$name_too_short) && (!$username_too_long && !$username_too_short) 
                 && (!$password_too_long && !$password_too_short)){
-                    include("../database/database.php");
 
-                    $stmt = mysqli_prepare($connection, "INSERT INTO users (name, username, password, sex, cashed_in, debt, total_balance, banned) VALUES()");
+
+                    $default = 0.00;
+                    $banned = 0;
+
+
+                    include("../backends/database/database.php");
+                    $pass = password_hash($password, PASSWORD_DEFAULT);
+
+                    $stmt = mysqli_prepare($connection, "INSERT INTO users (name, username, password, sex, cashed_in, debt, total_balance, banned) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+
+                    mysqli_stmt_bind_param($stmt, "ssssdddi", $name, $username, $password, $sex, $default, $default, $default, $banned);
+
+                    mysqli_stmt_execute($stmt);
+
+                    mysqli_close($connection);
+
                 }
                 
             }
