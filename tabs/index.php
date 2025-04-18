@@ -11,9 +11,11 @@
 
 
 <body>
+    
     <?php include("../reusable/home_header.php");?>
     
     <section>
+        <!-- Homepage backend -->
         <?php include("../backends/home_backend/homepage_tab_backend.php"); ?>
 
         
