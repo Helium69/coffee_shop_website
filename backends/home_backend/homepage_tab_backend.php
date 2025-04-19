@@ -133,6 +133,7 @@
                         $data = mysqli_fetch_assoc($result);
                         if($data["username"] == $username && password_verify($password, $data["password"])){
                             header("Location: admin_tab.php");
+                            exit();
                         }
                     };
 

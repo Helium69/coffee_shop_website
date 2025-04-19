@@ -18,14 +18,14 @@
         <input type="number" name="price_small"> 
         <label> Price (Medium) </label>
 
-        <?php if($small_warning): ?>
+        <?php if($medium_warning): ?>
             <label class="warning"> Coffee price is out of range </label>
         <?php endif; ?>
 
         <input type="number" name="price_medium"> 
         <label> Price (Large) </label>
 
-        <?php if($small_warning): ?>
+        <?php if($large_warning): ?>
             <label class="warning"> Coffee price is out of range </label>
         <?php endif; ?>
 
