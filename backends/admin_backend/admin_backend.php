@@ -131,28 +131,53 @@
                 }
                 include("admin_forms/add_add_ons_form.php");
             }
-
-           
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
-        if(isset($_POST["home"])){
+        elseif(isset($_POST["home"])){
             header("Location: index.php");
-        }   
+        }
+        elseif(isset($_POST["view_all"])){
+            include("admin_forms/view_all_nav.php");
+
+            if(isset($_POST["view_all_users"])){
+
+                include("../backends/database/database.php");
+
+                $query = "
+                    SELECT * FROM users
+                ";
+
+                $result = mysqli_query($connection, $query);
+
+                if(mysqli_num_rows($result) > 0){   
+                    $userlist = [];
+
+                    while($row = mysqli_fetch_assoc($result)){
+                        $userlist[] = $row;
+                    }
+
+                    include("admin_forms/user_table.php");
+
+
+                }
+                else{
+                    echo "There is currently no user detected";
+                }
+
+
+
+                mysqli_close($connection);
+
+            }
+            elseif(isset($_POST["delete_users"])){
+                include("admin_forms/delete_form.php");
+
+                if(isset($_POST["submit_delete_user"])){
+
+                }
+            }
+            elseif(isset($_POST["ban_users"])){
+
+            }
+        }
     }
 ?>
