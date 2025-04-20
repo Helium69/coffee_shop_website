@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="../style/general.css">
 </head>
 <body>
-    
+    <?php include("../reusable/user_header.php");  ?>
+
+    <section>
+        <?php include("../backends/user_backend/user_backend.php"); ?>
+    </section>
+
+    <?php include("../reusable/general_footer.php"); ?>
 </body>
 </html>

@@ -17,8 +17,6 @@
     <section>
         <!-- Homepage backend -->
         <?php include("../backends/home_backend/homepage_tab_backend.php"); ?>
-
-        
     </section>
 
     <?php include("../reusable/general_footer.php")?>

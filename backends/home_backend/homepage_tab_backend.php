@@ -117,6 +117,7 @@
                 }
 
 
+                // add the warning if the input is wrong
 
                 if((!$username_too_long && !$username_too_short) && (!$password_too_long && !$password_too_short)){
                     include("../backends/database/database.php");
@@ -150,6 +151,49 @@
         elseif(isset($_POST["signin"])){
             include("../backends/forms/signin_form.php");
 
+            if(isset($_POST["submit_signin"])){
+                $username = filter_input(INPUT_POST, "signin_username", FILTER_SANITIZE_SPECIAL_CHARS) ?? "";
+                $password = filter_input(INPUT_POST, "signin_password", FILTER_SANITIZE_SPECIAL_CHARS) ?? "";
+
+                if(!empty($username) && !empty($password)){
+                    include("../backends/database/database.php");
+
+                    $statement = mysqli_prepare($connection, "SELECT * FROM users WHERE username = ?");
+
+                    mysqli_stmt_bind_param($statement, "s", $username);
+
+                    mysqli_stmt_execute($statement);
+
+                    $result = mysqli_stmt_get_result($statement);
+
+                    if(mysqli_num_rows($result) > 0){   
+                        $user = mysqli_fetch_assoc($result);
+                        if(password_verify($password, $user["password"])){
+
+                            if(!$user['banned']){
+                                session_destroy();
+                                session_start();
+
+                                $_SESSION["user"] = $user;
+                                
+                                header("Location: user_tab.php");
+                            }
+                            else{
+                                echo "Your account is currently banned";
+                            }
+                        }else{
+                            echo "Password is incorrect";
+                        }
+                    }
+                    else{
+                        echo "Username/Password is incorrect";
+                    }
+                    mysqli_close($connection);
+                }
+                else{
+                    echo "Invalid Input";
+                }
+            }
         }
 
 

@@ -235,8 +235,6 @@
                     else{
                         echo "No user has been found";
                     }
-
-
                     mysqli_close($connection);
                 }
             }
