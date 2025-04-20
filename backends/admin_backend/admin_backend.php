@@ -78,9 +78,6 @@
                         catch(Exception){
                             echo "There something went wrong with the server";
                         }
-
-                        
-
                     }
                 }
 
@@ -156,14 +153,10 @@
                     }
 
                     include("admin_forms/user_table.php");
-
-
                 }
                 else{
                     echo "There is currently no user detected";
                 }
-
-
 
                 mysqli_close($connection);
 
@@ -173,10 +166,79 @@
 
                 if(isset($_POST["submit_delete_user"])){
 
+                    $name = filter_input(INPUT_POST, "name_to_be_deleted", FILTER_SANITIZE_SPECIAL_CHARS) ?? "";
+                    $name = trim(strtoupper($name)); 
+
+                    include("../backends/database/database.php");
+
+                    $statement = mysqli_prepare($connection, "SELECT * FROM users WHERE name = ?;");
+                    mysqli_stmt_bind_param($statement, "s", $name);
+                    mysqli_stmt_execute($statement);
+
+                    $result = mysqli_stmt_get_result($statement);
+
+                    mysqli_stmt_close($statement);
+
+                    if(mysqli_num_rows($result) > 0){
+                        $delete_statement = mysqli_prepare($connection, "DELETE FROM users WHERE name = ?");
+                        mysqli_stmt_bind_param($delete_statement, "s", $name);
+                        mysqli_stmt_execute($delete_statement);
+
+                        mysqli_stmt_close($delete_statement);
+
+                        echo "User account has been successfully deleted";
+                    }
+                    else{
+                        echo "User has not been found";
+                    }
+                    mysqli_close($connection);
                 }
             }
             elseif(isset($_POST["ban_users"])){
+                include("admin_forms/ban_form.php");
 
+                if(isset($_POST["submit_ban_user"])){
+
+                    $name = filter_input(INPUT_POST, "name_to_be_ban", FILTER_SANITIZE_SPECIAL_CHARS) ?? "";
+                    $name = trim(strtoupper($name));
+
+                    include("../backends/database/database.php");
+
+                    $statement = mysqli_prepare($connection, "SELECT * FROM users WHERE name = ?;");
+                    mysqli_stmt_bind_param($statement, "s", $name);
+                    mysqli_stmt_execute($statement);
+
+                    $result = mysqli_stmt_get_result($statement);
+
+                    mysqli_stmt_close($statement);
+
+                    if(mysqli_num_rows($result) > 0){
+
+                        $user = mysqli_fetch_assoc($result);
+                        $status = 0;
+
+                        if(!$user["banned"]){
+                            $status = 1;
+                        }
+                        
+                        $query = "UPDATE users SET banned = $status WHERE name = '$user[name]'";
+                        mysqli_query($connection, $query);
+
+
+                        if($status == 1){
+                            echo "User has been banned";
+                        }
+                        else{
+                            echo "Ban on the user has been lifted";
+                        }
+                    }
+                    else{
+                        echo "No user has been found";
+                    }
+
+
+                    mysqli_close($connection);
+                }
             }
         }
     }
