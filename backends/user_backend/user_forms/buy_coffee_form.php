@@ -1,35 +1,24 @@
-<?php 
-    include("../backends/database/database.php");
+<div>
+    <form action="<?php echo $_SERVER["PHP_SELF"]?>" method="POST"> 
+        <input type="hidden" name="buy_coffee">
+        <input type="hidden" name="save">
 
-    $query = "SELECT * FROM coffee_price";
-    $result = mysqli_query($connection, $query);
+        <label> Coffee </label>
+        <select name="coffee">
+            <?php
+                $names = array_keys($coffee_list);
+                foreach($names as $coffee){
+                    echo"
+                        <option value='$coffee'> $coffee </option>
+                    ";   
+                }
+            ?>
 
-    if(mysqli_num_rows($result) > 0){
-        $coffee_list = [];
+           
+        </select>
 
-        while($row = mysqli_fetch_assoc($result)){
-            $coffee_list[] = $row;
-        }
-    }
-    else{
+        <input type="submit" name="select_coffee">
 
-    }
+    </form>
 
-    mysqli_close($connection);
-?>
-
-<form>
-    <label> Coffee </label>
-    <select name="coffee">
-        <?php
-            foreach($coffee_list as $coffee){
-                echo "
-                    <option> $coffee[name] </option>
-                ";
-            }
-        ?>
-    </select>
-
-
-
-</form>
+</div>
