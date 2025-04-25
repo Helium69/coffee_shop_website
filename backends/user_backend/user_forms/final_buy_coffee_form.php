@@ -18,12 +18,25 @@
     <form action="<?php $_SERVER["PHP_SELF"]?>" method="POST">
         <input type="hidden" name="buy_coffee">
         <input type="hidden" name="select_coffee">
+        <label> Size </label>
         <select name="size">
             <option value="SMALL"> Small </option>
             <option value="MEDIUM"> Medium </option>
             <option value="LARGE"> Large </option>
         </select>
 
+        <label> Add-Ons</label>
+            
+        <?php
+            foreach($add_ons_list as $name => $price){
+                echo 
+                "<input type='checkbox' name='addons' value='$name'>
+                <label> $name - $price </label>
+                ";
+            }
+        ?>
+        
+        
         <input type="number" name="quantity" min="1" max="10">
         <input type="submit" name="submit_order">
     </form>

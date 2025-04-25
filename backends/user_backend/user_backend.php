@@ -13,11 +13,14 @@
                             if($_SESSION["user"]["debt"] >= 0){
                                 $_SESSION["user"]["cashed_in"] += $_SESSION["user"]["debt"];
                                 $_SESSION["user"]["debt"] = 0;
+                                $_SESSION["user"]["total_balance"] = $_SESSION["user"]["cashed_in"];
+
                             }
 
                         }
                         else{
                             $_SESSION["user"]["cashed_in"] += $input_balance;
+                            $_SESSION["user"]["total_balance"] = $_SESSION["user"]["cashed_in"];
                         }
 
                         include("../backends/database/database.php");
@@ -57,23 +60,16 @@
 
             if(mysqli_num_rows($result) > 0){
 
-                $add_ons = [];
+                $add_ons_list = [];
 
                 if(mysqli_num_rows($result_addons) > 0){
                     while($row = mysqli_fetch_assoc($result_addons)){
-                        $name = $row["name"];
+                        $name = $row["add_on"];
                         $price = $row["price"];
 
-                        $add_ons[$name] = $price; 
+                        $add_ons_list[$name] = $price; 
                     }
                 }
-
-
-
-
-
-
-
 
                 $coffee_list = [];
             
@@ -93,12 +89,26 @@
                     if(isset($_POST["save"])){
                         $_SESSION["selected_coffee"] = $_POST["coffee"];
                     }
+
                     include("user_forms/final_buy_coffee_form.php");
                     if(isset($_POST["submit_order"])){
+
+
+                        $total_addon = 0;
+                        
+                        if(isset($_POST["addons"])){
+                            
+                            
+                            $list_addons[] = $_POST["addons"];
+                            foreach($list_addons as $selected){
+                                $total_addon += $add_ons_list[$selected];
+                            }
+                        }
+
                         $size = $_POST["size"];
                         $quantity = $_POST["quantity"];
 
-                        $total_payment = $coffee_list[$_SESSION["selected_coffee"]][$size] * $quantity;
+                        $total_payment = ($total_addon + $coffee_list[$_SESSION["selected_coffee"]][$size]) * $quantity;
 
 
                         if($_SESSION["user"]["debt"] >= 0){
@@ -113,6 +123,13 @@
                                 $_SESSION["user"]["debt"] = $new_balance;
                                 $_SESSION["user"]["total_balance"] = $new_balance;
                             }
+
+                            $transaction_query = "
+                                INSERT INTO transactions (name, payment)
+                                VALUES ('{$_SESSION['user']['name']}', $total_payment);
+                            ";
+
+                            mysqli_query($connection, $transaction_query);
 
                         }
                         else{
@@ -129,9 +146,30 @@
                                 else{
                                     $_SESSION["user"]["debt"] = $new_balance;
                                     $_SESSION["user"]["total_balance"] = $new_balance;
+
+
+                                    $transaction_query = "
+                                        INSERT INTO transactions (name, payment)
+                                        VALUES ('{$_SESSION['user']['name']}', $total_payment);
+                                    ";
+
+                                    mysqli_query($connection, $transaction_query);
                                 }
                             }
                         }
+
+                        $query_save_balances = "
+                            UPDATE users
+                            SET
+                                cashed_in = '{$_SESSION['user']['cashed_in']}',
+                                debt = '{$_SESSION['user']['debt']}',
+                                total_balance = '{$_SESSION['user']['total_balance']}'
+                            WHERE name = '{$_SESSION['user']['name']}'
+                        ";
+
+                        mysqli_query($connection, $query_save_balances);
+
+
                     }
                 }
             }

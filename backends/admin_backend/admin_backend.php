@@ -132,6 +132,72 @@
         elseif(isset($_POST["home"])){
             header("Location: index.php");
         }
+        elseif(isset($_POST["view_properties"])){
+
+            // view income and view history transactions
+            include("admin_forms/view_option.php");
+
+            include("../backends/database/database.php");
+
+            if(isset($_POST["view_transactions"])){
+                $query = "SELECT * FROM transactions";
+
+                $result = mysqli_query($connection, $query);
+
+                if(mysqli_num_rows($result) > 0){
+                    $transaction_list = [];
+                    while($row = mysqli_fetch_assoc($result)){
+                        $transaction_list[] = $row;
+                    }
+                    include("admin_forms/view_income.php");
+                }
+                else{
+                    echo "No result was found";
+                }
+            }
+            elseif(isset($_POST["view_menu"])){
+
+                $coffee_list = [];
+                $addons_list = [];
+
+                $query_coffee = "SELECT * FROM coffee_price";
+                $query_addons = "SELECT * FROM add_ons_price";
+
+                $coffee_result = mysqli_query($connection, $query_coffee);
+                $addons_result = mysqli_query($connection, $query_addons);
+
+                if(mysqli_num_rows($coffee_result) > 0){
+                    while($row = mysqli_fetch_assoc($coffee_result)){
+                        $coffee_list[] = $row;
+                    }
+                }
+                else{
+                    echo "Coffee menu is empty";
+                }
+
+                if(mysqli_num_rows($addons_result) > 0){
+                    while($row = mysqli_fetch_assoc($addons_result)){
+                        $addons_list[] = $row;
+                    }
+                }
+                else{
+                    echo "Coffee menu is empty";
+                }
+
+
+
+                include("admin_forms/view_menu.php");
+
+
+            }
+
+
+            mysqli_close($connection);
+
+
+
+
+        }
         elseif(isset($_POST["view_all"])){
             include("admin_forms/view_all_nav.php");
 
