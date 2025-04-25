@@ -168,8 +168,14 @@
 
                 if(mysqli_num_rows($coffee_result) > 0){
                     while($row = mysqli_fetch_assoc($coffee_result)){
-                        $coffee_list[] = $row;
+                        $name = $row["name"];
+                        $size = $row["size"];
+                        $price = $row["price"];
+
+                        $coffee_list[$name][$size] = $price;
                     }
+
+                    include("admin_forms/view_menu_coffee.php");
                 }
                 else{
                     echo "Coffee menu is empty";
@@ -177,17 +183,17 @@
 
                 if(mysqli_num_rows($addons_result) > 0){
                     while($row = mysqli_fetch_assoc($addons_result)){
-                        $addons_list[] = $row;
+                        $addon = $row["add_on"];
+                        $price = $row["price"];
+
+                        $addons_list[$addon] = $price;
                     }
+
+                    include("admin_forms/view_menu_addons.php");
                 }
                 else{
                     echo "Coffee menu is empty";
                 }
-
-
-
-                include("admin_forms/view_menu.php");
-
 
             }
 

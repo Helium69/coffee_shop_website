@@ -51,6 +51,7 @@
             header("Location: index.php");
         }
         elseif(isset($_POST["buy_coffee"])){
+
             include("../backends/database/database.php");
 
             $query = "SELECT * FROM coffee_price";
@@ -110,6 +111,8 @@
 
                         $total_payment = ($total_addon + $coffee_list[$_SESSION["selected_coffee"]][$size]) * $quantity;
 
+                        $admin = "SELECT income FROM admin";
+
 
                         if($_SESSION["user"]["debt"] >= 0){
                             $new_balance = $_SESSION["user"]["cashed_in"] - $total_payment;
@@ -131,6 +134,17 @@
 
                             mysqli_query($connection, $transaction_query);
 
+                            $result = mysqli_query($connection, $admin);
+                            $income = mysqli_fetch_assoc($result);
+
+                            $updated_balance = $income['income'];
+                            
+                            $updated_balance += $total_payment;
+
+                            $update_income_query = "UPDATE admin SET income = $updated_balance";
+
+                            mysqli_query($connection, $update_income_query);
+                            
                         }
                         else{
                             if($_SESSION["user"]["debt"] <= -999.99){
@@ -154,6 +168,17 @@
                                     ";
 
                                     mysqli_query($connection, $transaction_query);
+
+                                    $result = mysqli_query($connection, $admin);
+                                    $income = mysqli_fetch_assoc($result);
+
+                                    $updated_balance = $income['income'];
+                                    
+                                    $updated_balance += $total_payment;
+
+                                    $update_income_query = "UPDATE admin SET income = $updated_balance";
+
+                                    mysqli_query($connection, $update_income_query);
                                 }
                             }
                         }
@@ -168,19 +193,14 @@
                         ";
 
                         mysqli_query($connection, $query_save_balances);
-
-
                     }
                 }
             }
             
             else{
 
+
             }
-
-            
-
-
             mysqli_close($connection);
         }
     }
