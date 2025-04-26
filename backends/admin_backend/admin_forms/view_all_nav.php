@@ -1,4 +1,5 @@
-<div class="form">
+<br>
+<div class="form_admin">
     <form action="<?php echo $_SERVER["PHP_SELF"]?>" method="POST">
         <input type="hidden" name="view_all">
         <label> View All User </label>

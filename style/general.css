@@ -72,3 +72,18 @@ footer{
     color: white;
 }
 
+.txtbox{
+    display: block;
+}
+
+td{
+    border: solid;
+    border-radius: 20px;
+    background-color: white;
+    padding: 7px 10px;
+}
+
+table{
+    margin: auto;
+}
+

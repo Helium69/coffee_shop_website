@@ -1,8 +1,9 @@
+<h2 class="title"> <strong> Transaction History </strong> </h2>
 <table>
     <tr>
-        <td> Name </td>
-        <td> Payment </td>
-        <td> Date of Payemnt </td>
+        <td> <b> Name </b> </td>
+        <td> <b> Payment </b> </td>
+        <td> <b> Date of Payment </b> </td>
     </tr>
 
     <?php 

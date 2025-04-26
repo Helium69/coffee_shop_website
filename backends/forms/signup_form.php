@@ -1,5 +1,6 @@
+<br>
 <div class="form">
-    <h2 class="title"> Sign Up </h2>
+    <h2 class="title"> <strong> Sign Up</strong> </h2>
     <form action="<?php echo $_SERVER["PHP_SELF"]?>" method="POST">
         <label class="form_label"> Username </label>
         <input type="text" name="signup_username">
@@ -36,8 +37,8 @@
             <option value="male"> Male </option>
             <option value="female"> Female </option>
         </select>
-        <input type="hidden" name="signup"> 
-        <input type="submit" name="signup_submit">
+        <input type="hidden" name="signup"> <br> <br>
+        <input class="nav_button" type="submit" name="signup_submit">
     
     </form>
 </div>

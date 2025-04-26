@@ -1,8 +1,9 @@
+<h2 class="title"> <strong> Coffee Menu </strong></h2>
 <table>
     <tr>
-        <td> Coffee </td>
-        <td> Size </td>
-        <td> Price </td>
+        <td> <strong> Coffee </strong> </td>
+        <td> <strong> Size </strong></td>
+        <td> <strong> Price </strong> </td>
     </tr>
 
     <?php

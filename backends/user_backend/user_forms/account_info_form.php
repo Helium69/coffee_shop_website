@@ -1,4 +1,4 @@
-
+<h2 class="title"> <strong> Deposit </strong></h2>
 <div class="form">
     <form action="<?php echo $_SERVER["PHP_SELF"]?>" method="POST">
         <label> Deposit </label>

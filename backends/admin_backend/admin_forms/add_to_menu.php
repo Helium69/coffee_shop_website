@@ -1,3 +1,4 @@
+<br>
 <div class="form">
     <form action="<?php echo $_SERVER["PHP_SELF"]?>" method="POST">
         <input type="hidden" name="add_coffee">

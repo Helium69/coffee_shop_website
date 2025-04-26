@@ -1,5 +1,6 @@
+<br>    
 <div class="form">
-    <h2 class="title"> Admin </h2>
+    <h2 class="title"> <strong> Admin </strong> </h2>
     <form action="<?php echo $_SERVER["PHP_SELF"]?>" method="POST">
         <label class="form_label"> Username </label>
         <input type="text" name="admin_username">
@@ -21,8 +22,8 @@
             <label class="warning"> Password is too short </label>
         <?php endif; ?>
 
-        <input type="hidden" name="admin">
-        <input type="submit" name="admin_submit">
+        <input type="hidden" name="admin"> <br> <br>
+        <input class="nav_button" type="submit" name="admin_submit">
     
     </form>
 </div>

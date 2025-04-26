@@ -1,15 +1,15 @@
-<h3> <strong> All Current Signed Up Users</strong></h3>
+<h3 class="title"> <strong> All Current Signed Up Users</strong></h3>
 <table>
     <tr>
-        <td> ID </td>
-        <td> NAME </td>
-        <td> SEX </td>
-        <td> USERNAME </td>
-        <td> CASHED IN BALANCE </td>
-        <td> DEBT BALANCE </td>
-        <td> TOTAL BALANCE </td>
-        <td> ACCOUNT STATUS </td>
-        <td> DATE JOINED </td>
+        <td> <b> ID </b> </td>
+        <td> <b> NAME </b> </td>
+        <td> <b> SEX </b> </td>
+        <td> <b> USERNAME </b> </td>
+        <td> <b> CASHED IN BALANCE </b> </td>
+        <td> <b> DEBT BALANCE </b> </td>
+        <td> <b> TOTAL BALANCE </b> </td>
+        <td> <b> ACCOUNT STATUS </b> </td>
+        <td> <b> DATE & TIME JOINED </b> </td>
     </tr>
 
     

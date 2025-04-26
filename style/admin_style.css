@@ -1,0 +1,9 @@
+.form_admin{
+    background-color: white;
+    width: 470px;
+    border: solid;
+    border-radius: 20px;
+    padding: 10px;
+    align-items: center;
+    margin: auto;
+}

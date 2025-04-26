@@ -107,92 +107,97 @@
                         }
 
                         $size = $_POST["size"];
-                        $quantity = $_POST["quantity"];
+                        $quantity = $_POST["quantity"] ?? 0;
 
-                        $total_payment = ($total_addon + $coffee_list[$_SESSION["selected_coffee"]][$size]) * $quantity;
+                        if($quantity > 0){
+                            $total_payment = ($total_addon + $coffee_list[$_SESSION["selected_coffee"]][$size]) * $quantity;
 
-                        $admin = "SELECT income FROM admin";
+                            $admin = "SELECT income FROM admin";
 
 
-                        if($_SESSION["user"]["debt"] >= 0){
-                            $new_balance = $_SESSION["user"]["cashed_in"] - $total_payment;
+                            if($_SESSION["user"]["debt"] >= 0){
+                                $new_balance = $_SESSION["user"]["cashed_in"] - $total_payment;
 
-                            if($new_balance >= 0){
-                                $_SESSION["user"]["cashed_in"] = $new_balance;
-                                $_SESSION["user"]["total_balance"] = $new_balance;
+                                if($new_balance >= 0){
+                                    $_SESSION["user"]["cashed_in"] = $new_balance;
+                                    $_SESSION["user"]["total_balance"] = $new_balance;
+                                }
+                                else{
+                                    $_SESSION["user"]["cashed_in"] = 0;
+                                    $_SESSION["user"]["debt"] = $new_balance;
+                                    $_SESSION["user"]["total_balance"] = $new_balance;
+                                }
+
+                                $transaction_query = "
+                                    INSERT INTO transactions (name, payment)
+                                    VALUES ('{$_SESSION['user']['name']}', $total_payment);
+                                ";
+
+                                mysqli_query($connection, $transaction_query);
+
+                                $result = mysqli_query($connection, $admin);
+                                $income = mysqli_fetch_assoc($result);
+
+                                $updated_balance = $income['income'];
+                                
+                                $updated_balance += $total_payment;
+
+                                $update_income_query = "UPDATE admin SET income = $updated_balance";
+
+                                mysqli_query($connection, $update_income_query);
+                                
                             }
                             else{
-                                $_SESSION["user"]["cashed_in"] = 0;
-                                $_SESSION["user"]["debt"] = $new_balance;
-                                $_SESSION["user"]["total_balance"] = $new_balance;
-                            }
-
-                            $transaction_query = "
-                                INSERT INTO transactions (name, payment)
-                                VALUES ('{$_SESSION['user']['name']}', $total_payment);
-                            ";
-
-                            mysqli_query($connection, $transaction_query);
-
-                            $result = mysqli_query($connection, $admin);
-                            $income = mysqli_fetch_assoc($result);
-
-                            $updated_balance = $income['income'];
-                            
-                            $updated_balance += $total_payment;
-
-                            $update_income_query = "UPDATE admin SET income = $updated_balance";
-
-                            mysqli_query($connection, $update_income_query);
-                            
-                        }
-                        else{
-                            if($_SESSION["user"]["debt"] <= -999.99){
-                                echo "Too much debt";
-                            }
-                            else{
-                                $debt = $_SESSION["user"]["debt"];
-                                $new_balance = $debt += -$total_payment;
-
-                                if($new_balance < -999.99){
+                                if($_SESSION["user"]["debt"] <= -999.99){
                                     echo "Too much debt";
                                 }
                                 else{
-                                    $_SESSION["user"]["debt"] = $new_balance;
-                                    $_SESSION["user"]["total_balance"] = $new_balance;
+                                    $debt = $_SESSION["user"]["debt"];
+                                    $new_balance = $debt += -$total_payment;
+
+                                    if($new_balance < -999.99){
+                                        echo "Too much debt";
+                                    }
+                                    else{
+                                        $_SESSION["user"]["debt"] = $new_balance;
+                                        $_SESSION["user"]["total_balance"] = $new_balance;
 
 
-                                    $transaction_query = "
-                                        INSERT INTO transactions (name, payment)
-                                        VALUES ('{$_SESSION['user']['name']}', $total_payment);
-                                    ";
+                                        $transaction_query = "
+                                            INSERT INTO transactions (name, payment)
+                                            VALUES ('{$_SESSION['user']['name']}', $total_payment);
+                                        ";
 
-                                    mysqli_query($connection, $transaction_query);
+                                        mysqli_query($connection, $transaction_query);
 
-                                    $result = mysqli_query($connection, $admin);
-                                    $income = mysqli_fetch_assoc($result);
+                                        $result = mysqli_query($connection, $admin);
+                                        $income = mysqli_fetch_assoc($result);
 
-                                    $updated_balance = $income['income'];
-                                    
-                                    $updated_balance += $total_payment;
+                                        $updated_balance = $income['income'];
+                                        
+                                        $updated_balance += $total_payment;
 
-                                    $update_income_query = "UPDATE admin SET income = $updated_balance";
+                                        $update_income_query = "UPDATE admin SET income = $updated_balance";
 
-                                    mysqli_query($connection, $update_income_query);
+                                        mysqli_query($connection, $update_income_query);
+                                    }
                                 }
                             }
+
+                            $query_save_balances = "
+                                UPDATE users
+                                SET
+                                    cashed_in = '{$_SESSION['user']['cashed_in']}',
+                                    debt = '{$_SESSION['user']['debt']}',
+                                    total_balance = '{$_SESSION['user']['total_balance']}'
+                                WHERE name = '{$_SESSION['user']['name']}'
+                            ";
+
+                            mysqli_query($connection, $query_save_balances);
                         }
-
-                        $query_save_balances = "
-                            UPDATE users
-                            SET
-                                cashed_in = '{$_SESSION['user']['cashed_in']}',
-                                debt = '{$_SESSION['user']['debt']}',
-                                total_balance = '{$_SESSION['user']['total_balance']}'
-                            WHERE name = '{$_SESSION['user']['name']}'
-                        ";
-
-                        mysqli_query($connection, $query_save_balances);
+                        else{
+                            echo "Please include the a quantity";
+                        }
                     }
                 }
             }

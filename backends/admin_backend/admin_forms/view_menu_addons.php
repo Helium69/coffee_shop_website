@@ -1,7 +1,8 @@
+<h2 class="title"> <strong> Add-Ons Menu </strong></h2>
 <table> 
     <tr> 
-        <td> Add-ons </td>
-        <td> Price </td>
+        <td> <strong> Add-ons </strong> </td>
+        <td> <strong> Price </strong> </td>
     </tr>
 
     <?php 

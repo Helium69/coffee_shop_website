@@ -140,7 +140,14 @@
             include("../backends/database/database.php");
 
             if(isset($_POST["view_transactions"])){
+                $income_query = "SELECT income FROM admin";
                 $query = "SELECT * FROM transactions";
+
+                $income_result = mysqli_query($connection, $income_query);
+                $row = mysqli_fetch_assoc($income_result);
+                $income = $row['income'];
+                
+                include("admin_forms/income.php");
 
                 $result = mysqli_query($connection, $query);
 
@@ -160,6 +167,7 @@
                 $coffee_list = [];
                 $addons_list = [];
 
+                
                 $query_coffee = "SELECT * FROM coffee_price";
                 $query_addons = "SELECT * FROM add_ons_price";
 
