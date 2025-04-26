@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> User Tab </title>
     <link rel="stylesheet" href="../style/general.css">
+    <link href="../style/user_style.css" rel="stylesheet">
 </head>
 <body>
     <?php include("../reusable/user_header.php");  ?>

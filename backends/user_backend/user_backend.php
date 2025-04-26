@@ -144,6 +144,8 @@
 
                                 $update_income_query = "UPDATE admin SET income = $updated_balance";
 
+                                echo "<h2 class='title'> <strong> Total: $total_payment </strong> </h2>";
+
                                 mysqli_query($connection, $update_income_query);
                                 
                             }
@@ -179,6 +181,8 @@
 
                                         $update_income_query = "UPDATE admin SET income = $updated_balance";
 
+                                        echo "<h2 class='title'> <strong> Total: $total_payment </strong> </h2>";
+
                                         mysqli_query($connection, $update_income_query);
                                     }
                                 }
@@ -196,15 +200,13 @@
                             mysqli_query($connection, $query_save_balances);
                         }
                         else{
-                            echo "Please include the a quantity";
+                            echo "<h2 class='title'> <strong> Please include a quantity </strong> </h2>";
                         }
                     }
                 }
             }
-            
             else{
-
-
+                echo "No coffee is currently available for sale";
             }
             mysqli_close($connection);
         }

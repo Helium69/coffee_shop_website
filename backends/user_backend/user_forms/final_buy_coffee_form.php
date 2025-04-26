@@ -13,7 +13,7 @@
     </tr>
 </table>
 
-<div class="form">
+<div class="form" id="buy_form">
 
     <form action="<?php $_SERVER["PHP_SELF"]?>" method="POST">
         <input type="hidden" name="buy_coffee">
@@ -25,19 +25,19 @@
             <option value="LARGE"> Large </option>
         </select>
 
-        <label> Add-Ons</label>
+        <br> <label> Add-Ons</label> <br>
             
         <?php
             foreach($add_ons_list as $name => $price){
                 echo 
                 "<input type='checkbox' name='addons' value='$name'>
-                <label> $name - $price </label>
+                <label> $name - $price </label> <br>
                 ";
             }
         ?>
         
         
-        <input type="number" name="quantity" min="1" max="10">
+        <input type="number" name="quantity" min="1" max="10"> <br>
         <input type="submit" name="submit_order">
     </form>
 </div>

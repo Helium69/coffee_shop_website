@@ -1,0 +1,21 @@
+.form_user{
+    background-color: white;
+    width: 270px;
+    border: solid;
+    border-radius: 20px;
+    padding: 10px;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+}
+
+.form_buy{
+    background-color: white;
+    width: 270px;
+    border: solid;
+    border-radius: 20px;
+    padding: 10px;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+}
