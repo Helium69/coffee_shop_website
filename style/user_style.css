@@ -19,3 +19,16 @@
     margin: auto;
     text-align: center;
 }
+
+.comment_section{
+    width: 400px;
+    height: 300px;
+    overflow-y: auto;
+    border: solid;
+    padding: 10px;
+    margin: auto;
+}
+
+.comment{
+    margin-bottom: 10px;
+}

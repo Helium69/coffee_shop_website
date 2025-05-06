@@ -50,6 +50,78 @@
             session_destroy();
             header("Location: index.php");
         }
+        elseif(isset($_POST["coffee_review"])){
+
+            //unfinished and messy code - linked to write_comment.php, view_comment.php and find_coffee.php
+            
+            include("../backends/database/database.php");
+
+
+            include("user_forms/comment_or_write.php");
+
+            if(isset($_POST["btn_goto_view"])){
+
+                include("");
+
+
+
+
+            }
+            elseif(isset($_POST["btn_goto_write"])){
+                $query = "SELECT DISTINCT name FROM coffee_price";
+
+                $query = mysqli_query($connection, $query);
+
+                $coffee_list = [];
+
+                while($row = mysqli_fetch_assoc($query)){
+                    $coffee_list[] = $row;
+                }
+
+                include("user_forms/write_comment.php");
+
+                if(isset($_POST["btn_submit_comment"])){
+                    $comment = filter_input(INPUT_POST, "user_comment", FILTER_SANITIZE_SPECIAL_CHARS) ?? "";
+                    $coffee = $_POST["selected_coffee"];
+                    $name = $_SESSION["user"]["username"];
+
+                    if(strlen($comment) < 255){
+                        if(!empty($comment) && !empty($name)){
+                            $stmt = mysqli_prepare($connection, "INSERT INTO comments (username, comment, coffee) VALUES (?, ?, ?)");
+                            
+                            mysqli_stmt_bind_param($stmt, "sss", $name, $comment, $coffee);
+    
+                            if(mysqli_stmt_execute($stmt)){
+                                echo "Saved Successfully";
+                            }
+                            else{
+                                echo "Something went wrong";
+                            }
+
+
+                            mysqli_stmt_close($stmt);
+    
+                        }
+                        else{
+                            echo "Comment should not be empty";
+                        }
+                    }
+                    else{
+                        echo "Comment length has exceeded the maximum range";
+                    }
+                }
+            }
+
+
+
+            
+
+
+
+            mysqli_close($connection);
+            
+
+        }
         elseif(isset($_POST["buy_coffee"])){
 
             include("../backends/database/database.php");
