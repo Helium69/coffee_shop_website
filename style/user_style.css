@@ -31,4 +31,8 @@
 
 .comment{
     margin-bottom: 10px;
+    border: solid;
+    border-radius: 20px;
+    padding: 5px;
 }
+

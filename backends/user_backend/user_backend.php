@@ -52,20 +52,44 @@
         }
         elseif(isset($_POST["coffee_review"])){
 
-            //unfinished and messy code - linked to write_comment.php, view_comment.php and find_coffee.php
+            //unfinished and messy code - finish ts cuh :(
             
             include("../backends/database/database.php");
-
 
             include("user_forms/comment_or_write.php");
 
             if(isset($_POST["btn_goto_view"])){
+                $query = "SELECT DISTINCT name FROM coffee_price";
+                $result = mysqli_query($connection, $query);
 
-                include("");
+                $coffee_list = [];
+                if(mysqli_num_rows($result) > 0){
+                    while($row = mysqli_fetch_assoc($result)){
+                        $coffee_list[] = $row;
+                    }
+                }
+                include("user_forms/view_comment.php");
 
+                if(isset($_POST["submit_view_coffee"])){
+                    $selected_coffee = $_POST["view_selected_coffee"];
 
+                    $query = "SELECT * FROM comments WHERE coffee = '$selected_coffee'";
 
+                    $result = mysqli_query($connection, $query);
 
+                    $comment_result = [];
+                    if(mysqli_num_rows($result) > 0){
+                        while($row = mysqli_fetch_assoc($result)){
+                            $comment_result[] = $row;
+                        }
+
+                        include("user_forms/comment_section.php");
+                    }
+                    else{
+                        echo "No review for this coffee yet";
+                    }
+
+                }
             }
             elseif(isset($_POST["btn_goto_write"])){
                 $query = "SELECT DISTINCT name FROM coffee_price";
@@ -111,12 +135,6 @@
                     }
                 }
             }
-
-
-
-            
-
-
 
             mysqli_close($connection);
             

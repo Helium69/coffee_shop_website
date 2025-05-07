@@ -1,16 +1,17 @@
 <?php
     if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-        $name_too_long = false;
-        $name_too_short = false;
-
-        $username_too_long = false;
-        $username_too_short = false;
-
-        $password_too_short = false;
-        $password_too_long = false;
+        
 
         if(isset($_POST["signup"])){
+            $name_too_long = false;
+            $name_too_short = false;
+
+            $username_too_long = false;
+            $username_too_short = false;
+
+            $password_too_short = false;
+            $password_too_long = false;
 
             // sign up backend
 
@@ -84,13 +85,9 @@
                 }
                 
             }
-
-
             include("../backends/forms/signup_form.php");
         }
         elseif(isset($_POST["admin"])){
-
-
 
             $password_too_long = false;
             $password_too_short = false;
@@ -195,20 +192,9 @@
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        elseif(isset($_POST["about"])){
+            include("about_tab.php");
+        }
 
     }
     

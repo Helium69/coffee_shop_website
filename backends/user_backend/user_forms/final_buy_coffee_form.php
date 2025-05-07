@@ -36,7 +36,7 @@
             }
         ?>
         
-        
+        <label> Quantity: </label>
         <input type="number" name="quantity" min="1" max="10"> <br>
         <input type="submit" name="submit_order">
     </form>

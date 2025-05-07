@@ -87,3 +87,8 @@ table{
     margin: auto;
 }
 
+pre {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    
+}
